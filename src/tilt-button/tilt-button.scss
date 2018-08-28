@@ -1,0 +1,73 @@
+// fork by  Charlotte Dann
+$tilts: 15;
+$button: #bdefe7;
+$shadow: #63bdad; 
+
+.button {
+  display: flex;
+  position: relative;
+  // gradient because sometimes the top peaks out when skewing
+  background: linear-gradient(to bottom, $button, $shadow);
+  min-width: 10em;
+  min-height: 3em;
+  text-align: center;
+  cursor: pointer;
+  .text {
+    position: absolute;
+    z-index: 1;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .tilt {
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    flex-grow: 1;
+  }
+  .background {
+    position: absolute;
+    top: -2px;
+    left: -1px;
+    height: 100%;
+    width: calc(100% + 2px);
+    background: $button;
+  }
+  &:active {
+    .text {
+      top: 1px;
+    }
+    .background {
+      top: -1px;
+    }
+  }
+  @for $i from 1 through $tilts {
+    .tilt-#{$i}:active {
+      $skew: (-$tilts/2+$i)/$tilts*3deg;
+      ~ .background, ~ .text {
+        transform: skewY($skew);
+      }
+    }
+  }
+}
+
+
+$s: 50px;
+$h: sqrt($s*$s/0.5px);
+$light: hsl(158, 53%, 94%);
+$dark: hsl(158, 53%, 90%);
+body {
+	background: $light;
+	background-image: repeating-linear-gradient(45deg,	transparent, transparent $s/2, $dark $s/2, $dark $s);
+	background-size: $h $h;
+	background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Lato, Helvetica, sans-serif;
+}
